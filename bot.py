@@ -2,6 +2,8 @@ import tweepy
 from getdef import *
 from dotenv import load_dotenv
 import os
+from datetime import datetime
+import time
 
 load_dotenv('config.env')
 
@@ -34,6 +36,47 @@ def enviarTweet(texto, status_id):
     else:
         api.update_status(texto, in_reply_to_status_id=status_id, auto_populate_reply_metadata=True)
 
+class EnviarTweet():
+
+    def __init__(self, texto):
+        self.texto = texto
+        
+    def reply(self, status_id):
+        split_text = self.cortar()
+        last_tweet_id = status_id
+        for x in split_text:
+            tweet = api.update_status(x, in_reply_to_status_id=last_tweet_id, auto_populate_reply_metadata=True)
+            last_tweet_id = tweet.id_str
+
+    def tweet(self):
+        split_text = self.cortar()
+        tweet = api.update_status(split_text[0])
+        if len(split_text) > 1:
+            for x in range(len(split_text) - 1):
+                last_tweet_id = tweet.id_str
+                tweet = api.update_status(split_text[x+1], in_reply_to_status_id=last_tweet_id, auto_populate_reply_metadata=True)
+                
+            
+    def cortar(self):
+        split_text = []
+        for i in range(0, len(self.texto), 280):
+            split_text.append(self.texto[i:i+280])
+        return split_text   
+
+#===========================================================
+
+while True:
+    
+    minutes = datetime.now().minute
+    print(minutes)
+
+    if minutes == 0:
+        definicion = GetDef()
+        nuevoTweet = EnviarTweet(definicion.random())
+        nuevoTweet.tweet()
+
+    time.sleep(60)  
+
 #===========================================================
 
 class TweetListener(tweepy.StreamListener):
@@ -43,8 +86,9 @@ class TweetListener(tweepy.StreamListener):
 
     def on_status(self, status):
         palabra = getPalabra(status.text)
-        definicion = getDef(palabra)
-        enviarTweet(definicion, status.id)
+        definicion = GetDef()
+        nuevoTweet = EnviarTweet(definicion.set(palabra))
+        nuevoTweet.reply(status.id)
 
     def on_error(self, status_code):
         print("Error", status_code)
