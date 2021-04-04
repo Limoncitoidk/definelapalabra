@@ -68,7 +68,6 @@ class EnviarTweet():
 while True:
     
     minutes = datetime.now().minute
-    print(minutes)
 
     if minutes == 0:
         definicion = GetDef()
