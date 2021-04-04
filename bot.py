@@ -3,7 +3,7 @@ from getdef import *
 from dotenv import load_dotenv
 import os
 from datetime import datetime
-import time
+import threading
 
 load_dotenv('config.env')
 
@@ -65,7 +65,7 @@ class EnviarTweet():
 
 #===========================================================
 
-while True:
+def reloj():
     
     minutes = datetime.now().minute
 
@@ -74,7 +74,11 @@ while True:
         nuevoTweet = EnviarTweet(definicion.random())
         nuevoTweet.tweet()
 
-    time.sleep(60)  
+    timer = threading.Timer(60, reloj)
+    timer.start()
+
+timer = threading.Timer(60, reloj)
+timer.start() 
 
 #===========================================================
 
