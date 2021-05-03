@@ -69,7 +69,7 @@ def reloj():
     
     minutes = datetime.now().minute
 
-    if minutes == 0:
+    if minutes == 1 or minutes == 31:
         definicion = GetDef()
         nuevoTweet = EnviarTweet(definicion.random())
         nuevoTweet.tweet()
