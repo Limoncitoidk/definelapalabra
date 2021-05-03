@@ -63,14 +63,17 @@ class GetDef():
                     index = index + 1
 
                 #Cada definición corresponde a una acepción distinta de la palabra
-                for defstr in entradas.select('p[class="j"], p[class="j1"], p[class="j2"], p[class="l2"]'):
+                for defstr in entradas.select('p[class="j"], p[class="j1"], p[class="j2"], p[class="l2"], p[class="b"]'):
                 
+                    #Quita el texto innecesario
                     for extrastr in defstr.select('abbr[title*="usado"], abbr[title*="Usado"], span[class="h"], sup'):
                         if extrastr.text.strip() != "U.":
                             extrastr.extract()
 
+                    texto = (defstr.text.strip()).split("Apl.")[0]
+                       
                     #Quita los caracteres especiales (‖)
-                    texto = defstr.text.strip().replace("‖ ","")
+                    texto = texto.replace("‖ ","")
 
                     #Reemplaza los espacios dobles y triples por uno solo ("Hola   mundo" -> "Hola mundo")
                     texto = re.sub("\s\s+", " ", texto)
@@ -96,15 +99,13 @@ class GetDef():
 
 #print("Escribe la palabra que desees buscar:")
 
-#while(True):       
-#    palabra = input()
-#    print("")
+# while(True):       
+    # palabra = input()
+    # print("")
 
-#    definicion = GetDef()
+    # definicion = GetDef()
     
-#    if palabra != "random":
-#        print(definicion.set(palabra))
-#    else:
-#        print(definicion.random())
-
-
+    # if palabra != "random":
+        # print(definicion.set(palabra))
+    # else:
+        # print(definicion.random())
