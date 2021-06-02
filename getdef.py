@@ -3,7 +3,6 @@ import urllib.parse
 from bs4 import BeautifulSoup
 import re
 
-
 roman_nums = ["I", "II", "III", "IV", "V"]
 
 class GetDef():

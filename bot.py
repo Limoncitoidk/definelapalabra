@@ -1,17 +1,15 @@
 import tweepy
 from getdef import *
-from dotenv import load_dotenv
 import os
 from datetime import datetime
 import threading
+from boto.s3.connection import S3Connection
 
-load_dotenv('config.env')
+consumer_key = os.environ['CONSUMER_KEY']
+consumer_secret = os.environ['CONSUMER_SECRET']
 
-consumer_key = os.getenv('CONSUMER_KEY')
-consumer_secret = os.getenv('CONSUMER_SECRET')
-
-access_token = os.getenv('ACCESS_TOKEN')
-access_secret = os.getenv('ACCESS_SECRET')
+access_token = os.environ['ACCESS_TOKEN']
+access_secret = os.environ['ACCESS_SECRET']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
